@@ -100,7 +100,7 @@ bbdt <- function(secs, days = 10, flds = "TRADE", starttime = NULL,
     timediff <- round(as.numeric(difftime(as.POSIXct(endtime), as.POSIXct(starttime), unit = "mins")))
     timegaps <- seq(timediff, 0, by = -minutefreq) * 60
     timelist <- endtime - timegaps
-    natimes <- xts(rep(1, length(timelist)), order.by = timelist)
+    natimes <- xts(rep(NA, length(timelist)), order.by = timelist)
     indexTZ(natimes) <- "UTC"
     alldata <- lapply(secs, function(x) {
         #get the raw data
@@ -111,6 +111,10 @@ bbdt <- function(secs, days = 10, flds = "TRADE", starttime = NULL,
                                                       barInterval = minutefreq)))) {
             rawt <- natimes
         } else {
+            if(nrow(rawt) == 0) {
+                flushprint(paste("no bar data for", secs, flds))
+                rawt <- natimes
+            }
             rawt[, 1] <- as.POSIXct(sub("T", " ", rawt[, 1])) #convert the first column from string to POSIXcta
             rawt <- xts(rawt[, -1], order.by = rawt[, 1]) #remove the time column and convert to xts
             indexTZ(rawt) <- "UTC"
