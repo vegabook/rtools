@@ -82,29 +82,33 @@ bbdh <- function(secs, years = 1, flds = "last_price", startDate = NULL, endDate
 }
 
 
-bbdt <- function(secs, days = 10, flds = "TRADE", starttime = NULL, minutefreq = 1, ohlc = FALSE, fillminutes = TRUE) {
+bbdt <- function(secs, days = 10, flds = "TRADE", starttime = NULL,
+                 minutefreq = 1, ohlc = FALSE, fillminutes = TRUE) {
 #this function gets tick data from Bloomberg
     if(is.null(starttime)) {
-         starttime <- strftime(Sys.time() - days * 24 * 60 * 60, format = "%Y-%m-%d %H:%M:%S.0") #needs .0
+         starttime <- Sys.time() - days * 24 * 60 * 60
     } else {
         starttime <- strftime(starttime, format = "%Y-%m-%d %H:%M:%S.0") #needs .0
+        starttime <- as.POSIXct(startime)
     }
     # create a rounded minute endtime
-    endTime <- strftime(Sys.time(), format = "%Y-%m-%d %H:%M:%S.0") 
-    endTime <- as.POSIXlt(endTime)
-    endTime$sec <- 0
+    endtime <- Sys.time()
+    endtime <- as.POSIXlt(endtime)
+    endtime$sec <- 0
+    endtime <- as.POSIXct(endtime)
     # create a list of minutes
-    timediff <- round(as.numeric(difftime(as.POSIXct(endTime), as.POSIXct(starttime), unit = "mins")))
+    timediff <- round(as.numeric(difftime(as.POSIXct(endtime), as.POSIXct(starttime), unit = "mins")))
     timegaps <- seq(timediff, 0, by = -minutefreq) * 60
-    timelist <- endTime - timegaps
+    timelist <- endtime - timegaps
     natimes <- xts(rep(1, length(timelist)), order.by = timelist)
     indexTZ(natimes) <- "UTC"
-    # and now fix endTime to string
-    endTime <- strftime(endTime, format = "%Y-%m-%d %H:%M:%S.0") 
     alldata <- lapply(secs, function(x) {
         #get the raw data
-        browser()
-        if("try-error" %in% class(try(rawt <- getBars(x, flds, startTime = starttime, endTime, barInterval = toString(minutefreq))))) {
+        if("try-error" %in% class(try(rawt <- getBars(x, 
+                                                      eventType = flds, 
+                                                      startTime = starttime, 
+                                                      endTime = endtime, 
+                                                      barInterval = minutefreq)))) {
             rawt <- natimes
         } else {
             rawt[, 1] <- as.POSIXct(sub("T", " ", rawt[, 1])) #convert the first column from string to POSIXcta
