@@ -25,6 +25,7 @@ nafill <- function(x) {
     return(x0)
 }
 
+
 bbdh <- function(secs, years = 1, flds = "last_price", startDate = NULL, endDate = NULL, asDateNotPosix = FALSE, checkgoodbdp = FALSE, 
                  datasource = NULL, simplify = T) {
 #this function gets secs over years from bloomberg daily data
