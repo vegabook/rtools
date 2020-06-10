@@ -170,7 +170,7 @@ makePCs <- function(sseriess, scale.unit = FALSE, equalize.vol = FALSE, decayhl 
 
 
 hair <- function(inmat, recentamount = 65, 
-                 haircol = "grey", recentcol = "darkgoldenrod3", yestcol = NA, mats = NA,
+                 haircol = "grey", recentcol = "darkgoldenrod3", yestcol = NA, mats = NA, meancol = NA,
                  nowcol = "red", withchange = FALSE, title = "yield curve evolution", withlegend = FALSE, 
                  miny = NA, maxy = NA, xlab = "maturity", ylab = "yield") {
     if(is.na(mats)) mats = as.numeric(colnames(inmat))
@@ -191,15 +191,26 @@ hair <- function(inmat, recentamount = 65,
     if(!is.na(yestcol)) {
         lines(mats, last2, lwd = 2, col = yestcol)
     }
+	numyears <- round(nrow(inmat)/262)
+	if(numyears == 1) {
+		legyears = paste("past", numyears, "year")
+	} else {
+		legyears = paste("past", numyears, "years")
+	}
     if(withlegend) {
         if(!is.na(yestcol)) {
-            legend("bottomright", fill = c(haircol, recentcol, yestcol, yestcol, nowcol), 
-                   legend = c(paste("last", round(nrow(inmat)/262), "years"), paste("last", recentamount, "days"), 
+            legend("topright", fill = c(haircol, recentcol, yestcol, yestcol, nowcol), 
+                   legend = c(legyears, paste("last", recentamount, "days"), 
                               "last bday", "now"))
+        } else if (!is.na(meancol)) {
+			means <- apply(inmat, 2, mean)
+			lines(mats, means, lwd = 2, col = meancol)
+            legend("topright", fill = c(haircol, recentcol, nowcol, meancol), 
+                   legend = c(legyears, paste("last", recentamount, "days"), "now", "mean"))
         } else {
-            legend("bottomright", fill = c(haircol, recentcol, nowcol), 
-                   legend = c(paste("last", round(nrow(inmat)/262), "years"), paste("last", recentamount, "days"), "now"))
-        }
+            legend("topright", fill = c(haircol, recentcol, nowcol), 
+                   legend = c(legyears, paste("last", recentamount, "days"), "now"))
+		}
     }
     if(withchange) {
         barplot(as.numeric(laster - last2), main = "bps change since yesterday", beside = TRUE, 
