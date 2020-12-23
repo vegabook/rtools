@@ -176,3 +176,19 @@ wideScreen <- function(howWide=as.numeric(strsplit(system('stty size', intern=T)
        options(width=as.integer(howWide))
 }
 
+
+recursivexts2df <- function(data) {
+# convert any xts to df in any nested list
+	if("list" %in% class(data)) {
+		print(names(data))
+		flush.console()
+		lapply(data, recursivexts2df)
+	} else {
+		if("xts" %in% class(data)) {
+			xts2df(data)
+		} else {
+			data
+		}
+	}
+} 
+
