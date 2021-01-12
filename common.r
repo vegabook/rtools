@@ -177,7 +177,7 @@ wideScreen <- function(howWide=as.numeric(strsplit(system('stty size', intern=T)
 }
 
 
-recursivexts2df <- function(data) {
+xts2df <- function(data) {
 # convert any xts to df in any nested list
 	if("list" %in% class(data)) {
 		print(names(data))
