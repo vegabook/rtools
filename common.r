@@ -90,7 +90,7 @@ bbdt <- function(secs, days = 10, flds = "TRADE", starttime = NULL,
          starttime <- Sys.time() - days * 24 * 60 * 60
     } else {
         starttime <- strftime(starttime, format = "%Y-%m-%d %H:%M:%S.0") #needs .0
-        starttime <- as.POSIXct(startime)
+        starttime <- as.POSIXct(starttime)
     }
     # create a rounded minute endtime
     endtime <- Sys.time()
