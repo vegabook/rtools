@@ -9,7 +9,8 @@
 * Have a look at the code but the main usefull tools are `blpConnect`, `bbdh` for daily historical data, `bbdt` for ticks, `bds` reference data, and `regress` for regression charting.
 * There is a bunch of other linear algebra stuff in there specifically PCA-related like `makePCs`, and also convenience functions like `logret`. 
 
-Disclaimer: NOT responsible for any messups whatsoever. This code has been accumulated over 2 decades of using R and is not meant to be canonical. 
+Disclaimer: NOT responsible for any messups whatsoever. This code has been accumulated over 2 decades of using R and is not meant to be canonical, but instead helps with exploratory financial data science, and especially, using the Terminal. 
+
 
 
 
