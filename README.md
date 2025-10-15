@@ -1,29 +1,10 @@
-# README #
+# T Browne financial analysis tools for R #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+## Installation
+* Clone the repo
+* In R:
+  `source("path/to/repo/tools.r")`
+  `source("path/to/repo/common.r")`
+  For each library that does not exist, you will have to `install.package("offending_library")`
+* Have a look at the code but the main usefull tools are `blpConnect`, `bbdh` for historical data, and `regress` for regression charting.
+* There is a bunch of other linear algebra stuff in there specifically PCA-related, and also convenience functions like `logret`. 
